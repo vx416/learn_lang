@@ -30,6 +30,7 @@ Fields of `Vocab Cloze`:
 | `Sentence` | an example sentence with the word wrapped as `{{c1::word}}` (this is what gets blanked out) |
 | `WordMeaning` | Traditional Chinese meaning of the word |
 | `SentenceMeaning` | Traditional Chinese translation of the sentence |
+| `SimilarWord` | one similar word and how the two differ in use (back side only) |
 
 The card shows a typing box on the front (`{{type:cloze:Sentence}}`) and reads the word and sentence aloud on the back with Anki's built-in TTS (`{{tts en_US:...}}`, macOS system voice, no audio files).
 

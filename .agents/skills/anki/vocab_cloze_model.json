@@ -5,14 +5,15 @@
     "Word",
     "Sentence",
     "WordMeaning",
-    "SentenceMeaning"
+    "SentenceMeaning",
+    "SimilarWord"
   ],
-  "css": ".card {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 20px;\n  text-align: center;\n  padding: 20px;\n  line-height: 1.6;\n}\n.cloze {\n  font-weight: bold;\n  color: #3b82f6;\n}\n.sentence-meaning {\n  font-size: 16px;\n  color: #9aa0a6;\n  margin-top: 14px;\n}\n.meaning {\n  font-size: 15px;\n  color: #80868b;\n  margin-top: 8px;\n}\n.word-title {\n  font-size: 24px;\n  font-weight: bold;\n  margin-top: 15px;\n}\nhr {\n  border: 0;\n  height: 1px;\n  background-color: #555;\n  margin: 18px 0;\n}",
+  "css": ".card {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 20px;\n  text-align: center;\n  padding: 20px;\n  line-height: 1.6;\n}\n.cloze {\n  font-weight: bold;\n  color: #3b82f6;\n}\n.sentence-meaning {\n  font-size: 16px;\n  color: #9aa0a6;\n  margin-top: 14px;\n}\n.meaning {\n  font-size: 15px;\n  color: #80868b;\n  margin-top: 8px;\n}\n.word-title {\n  font-size: 24px;\n  font-weight: bold;\n  margin-top: 15px;\n}\nhr {\n  border: 0;\n  height: 1px;\n  background-color: #555;\n  margin: 18px 0;\n}\n.similar {\n  font-size: 15px;\n  color: #80868b;\n  margin-top: 12px;\n  text-align: left;\n  display: inline-block;\n  max-width: 520px;\n}\n.similar b {\n  color: #3b82f6;\n}",
   "cardTemplates": [
     {
       "Name": "Cloze",
       "Front": "{{cloze:Sentence}}\n<div class=\"sentence-meaning\">{{SentenceMeaning}}</div>\n<div class=\"meaning\">💡 提示：{{WordMeaning}}</div>\n<br>\n{{type:cloze:Sentence}}",
-      "Back": "{{cloze:Sentence}}\n<div class=\"sentence-meaning\">{{SentenceMeaning}}</div>\n<br>\n{{type:cloze:Sentence}}\n<hr>\n<div class=\"word-title\">{{Word}}</div>\n<div class=\"meaning\">{{WordMeaning}}</div>\n{{tts en_US speed=1.2:Word}}\n{{tts en_US speed=1.2:cloze:Sentence}}"
+      "Back": "{{cloze:Sentence}}\n<div class=\"sentence-meaning\">{{SentenceMeaning}}</div>\n<br>\n{{type:cloze:Sentence}}\n<hr>\n<div class=\"word-title\">{{Word}}</div>\n<div class=\"meaning\">{{WordMeaning}}</div>\n{{#SimilarWord}}<div class=\"similar\">🔁 {{SimilarWord}}</div>{{/SimilarWord}}\n{{tts en_US speed=1.2:Word}}\n{{tts en_US speed=1.2:cloze:Sentence}}"
     }
   ]
 }

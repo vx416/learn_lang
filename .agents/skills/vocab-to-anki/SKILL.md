@@ -53,8 +53,9 @@ When the user gives approval (e.g. "可以", "確認", "沒問題"):
    - **Content rules** for each field:
      - `Word`: base/dictionary form, lowercase unless a proper noun.
      - `Sentence`: one natural sentence at CEFR C1 level (idiomatic, mature register, may use subordinate clauses or collocations a C1 reader meets in editorials and literary non-fiction), 8–20 words, with the target word wrapped as `{{c1::...}}` exactly as it appears. Prefer the base form so what the user types matches `Word`; if an inflected form reads better, the cloze wraps the inflected form and that is what the user must type. Never leave the word unblanked elsewhere in the sentence. Reuse the sentence from the article/context when possible; if it is shorter than 8 words, extend it rather than replace it.
-     - `WordMeaning`: short Traditional Chinese gloss for the sense used in the sentence; separate multiple senses with `、`. No English, no part-of-speech labels. It is shown on the front as a hint.
+     - `WordMeaning`: the part of speech as used in the sentence, in parentheses, followed by a short Traditional Chinese gloss for that sense; separate multiple senses with `、`. Labels: `n.`, `v.`, `adj.`, `adv.`, `prep.`, `conj.`, `phr. v.` (phrasal verb), `phr.` (other multi-word phrase), `idiom`. Examples: `(adj.) 無所不在的`, `(phr. v.) 被迫承受、遭受`. No other English. It is shown on the front as a hint.
      - `SentenceMeaning`: natural Traditional Chinese translation of the whole sentence. Also shown on the front.
+     - `SimilarWord`: one near-synonym or easily confused word, then how the two differ in use. Format: `<b>word</b><br>` followed by one line per word in Traditional Chinese, separated by `；`, each naming the word and the situation it fits, e.g. `<b>thorough</b><br>meticulous 強調對細節一絲不苟，形容人或做事態度；thorough 強調完整、沒有遺漏，形容檢查或調查`. Shown on the back only. Keep it under about 60 Chinese characters.
      - `tags`: `["vocab"]`.
 
 3. **Call `anki` Skill**:

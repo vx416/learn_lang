@@ -23,7 +23,7 @@ Personal English-learning workspace. AI agents (Claude Code, Codex, Gemini CLI /
 
    | Note type | Fields | Deck batches |
    |---|---|---|
-   | `Vocab Cloze` | Word, Sentence, WordMeaning, SentenceMeaning | `English::Vocab::001`, `002`, ... (200 notes each) |
+   | `Vocab Cloze` | Word, Sentence, WordMeaning (with part of speech), SentenceMeaning, SimilarWord (one near-synonym and how the two differ, back only) | `English::Vocab::001`, `002`, ... (200 notes each) |
    | `Grammar Practice` | Target, GrammarPoint, Sentence, Prompt, SentenceMeaning, Explanation | `English::Grammar::001`, `002`, ... |
 
    Both card templates show a typing box on the front (`{{type:cloze:...}}`) and read the completed sentence aloud on the back with the macOS system voice (`{{tts en_US speed=1.2:cloze:Sentence}}`). The model JSON files are the source of truth; the agent syncs them whenever a template changes.
@@ -37,13 +37,15 @@ Skills live in `.agents/skills/`, the cross-tool location scanned natively by Co
 | Skill | What it does | Say something like |
 |---|---|---|
 | `reading` | Writes a ~5-minute C1 English article on a topic, then breaks down the hard vocabulary, grammar, and sentence patterns. Saves the result to `.temp/articles/<date>-<title>.md`. | 給我一篇英文文章 |
+| `explain-english` | Explains an English word, phrase, or sentence in Traditional Chinese, then asks whether to save it as a vocab or grammar card. | be subjected to 是啥意思 |
 | `vocab-to-anki` | Pulls key words from the current context into `.temp/vocab.txt`, lets you add or remove words, then files them as `Vocab Cloze` cards. | 整理單字到 anki |
 | `grammar-to-anki` | Picks 2–4 C1-level grammar structures from the context, drafts cloze exercises into `.temp/grammar.json`, then files them as `Grammar Practice` cards. | 把文法存到 anki |
 | `correct-writing` | Corrects a passage you wrote, keeping your wording; gives a C1–C2 rewrite and a score; appends the original and correction to `.temp/writing/<date>.txt`. | 幫我改這段 |
 | `diary` | Runs the full `correct-writing` treatment on a diary entry, then expands the C1–C2 rewrite into a richer entry; appends original, corrected, rewritten, and expanded text to `.temp/diary/<month>-w<week>.txt`. | 這是我今天的日記 |
 | `review-writing` | Reads `.temp/writing/` and `.temp/diary/`, reports your recurring mistakes and weak vocabulary, then files the chosen items as grammar and vocab cards via the two card skills. | 整理我的寫作錯誤 |
 | `read-aloud` | Reads English aloud with macOS `say`: pasted text, an entry from `.temp/writing/` or `.temp/diary/` by `#N`, or an article from `.temp/articles/`. `correct-writing` and `diary` offer this for the C1–C2 rewrite. | 唸給我聽 / 唸 diary #2 |
-| `anki` | Transport layer used by the two above: `anki.py` wraps AnkiConnect with `decks`, `models`, `fields`, `list`, `add`, `update`, `batch`, and `raw`. Call it directly to search or fix cards. | 這週加了哪些字 |
+| `reset-deck` | Resets every card in a deck back to New (`forgetCards`), so the whole deck comes up for study again. Nothing is deleted. | reset vocab/001 |
+| `anki` | Transport layer used by the card skills: `anki.py` wraps AnkiConnect with `decks`, `models`, `fields`, `list`, `add`, `update`, `batch`, and `raw`. Call it directly to search or fix cards. | 這週加了哪些字 |
 
 Typical session: ask for an article, read it, say 整理單字 and 整理文法, confirm the drafts, then review in Anki.
 
