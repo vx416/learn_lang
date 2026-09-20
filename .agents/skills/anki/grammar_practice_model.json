@@ -1,0 +1,20 @@
+{
+  "modelName": "Grammar Practice",
+  "isCloze": true,
+  "inOrderFields": [
+    "Target",
+    "GrammarPoint",
+    "Sentence",
+    "Prompt",
+    "SentenceMeaning",
+    "Explanation"
+  ],
+  "css": ".card { font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif; font-size: 19px; text-align: left; max-width: 600px; margin: 0 auto; padding: 24px; line-height: 1.6; }\n.grammar-point { font-size: 14px; color: #8ab4f8; font-weight: bold; margin-bottom: 12px; }\n.sentence { font-size: 21px; font-weight: 500; margin-bottom: 14px; }\n.cloze { font-weight: bold; color: #3b82f6; }\n.prompt { font-size: 15px; color: #fbbc04; margin-bottom: 8px; }\n.sentence-meaning { font-size: 15px; color: #9aa0a6; margin-bottom: 12px; }\nhr { border: 0; height: 1px; background-color: #555; margin: 18px 0; }\n.explanation-title { font-size: 15px; font-weight: bold; margin-top: 14px; margin-bottom: 6px; color: #81c995; }\n.mistake-title { font-size: 15px; font-weight: bold; margin-top: 14px; margin-bottom: 6px; color: #f28b82; }\n.explanation, .mistake { font-size: 15px; line-height: 1.6; }",
+  "cardTemplates": [
+    {
+      "Name": "Grammar Cloze",
+      "Front": "{{cloze:Sentence}}\n<div class=\"sentence-meaning\">{{SentenceMeaning}}</div>\n{{#Prompt}}\n<div class=\"prompt\">💡 {{Prompt}}</div>\n{{/Prompt}}\n<br>\n{{type:cloze:Sentence}}",
+      "Back": "{{cloze:Sentence}}\n<div class=\"sentence-meaning\">{{SentenceMeaning}}</div>\n{{#Prompt}}\n<div class=\"prompt\">💡 {{Prompt}}</div>\n{{/Prompt}}\n<br>\n{{type:cloze:Sentence}}\n<hr>\n<div class=\"target-title\">{{Target}}</div>\n<div class=\"grammar-badge\">{{GrammarPoint}}</div>\n<div class=\"explanation\">{{Explanation}}</div>\n{{tts en_US speed=1.2:cloze:Sentence}}"
+    }
+  ]
+}
