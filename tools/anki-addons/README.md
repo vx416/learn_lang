@@ -8,7 +8,7 @@ cp -r tools/anki-addons/repeat_card tools/anki-addons/arrow_grading tools/anki-a
 
 ## repeat_card
 
-In the reviewer, **Q** shows the current card's front again without grading it. Use it to retype a word right away. It does not touch scheduling or the undo history, unlike Undo (Cmd+Z), which also reverts earlier operations such as notes added or deleted through AnkiConnect.
+In the reviewer, **Q** (or **Shift+Q**) shows the current card's front again without grading it. Shift+Q exists because CJK input methods such as Zhuyin swallow a plain `q`. Use it to retype a word right away. It does not touch scheduling or the undo history, unlike Undo (Cmd+Z), which also reverts earlier operations such as notes added or deleted through AnkiConnect.
 
 ## arrow_grading
 

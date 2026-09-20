@@ -55,7 +55,7 @@ Typical session: ask for an article, read it, say 整理單字 and 整理文法,
 | **Space** (box empty) | Show the answer without typing (Space Shows Answer add-on). |
 | **1 / 2 / 3 / 4** | Again / Hard / Good / Easy. **Enter** or **Space** on the back also means Good. Anki never grades the typed answer for you: if the comparison is red, press **1**. With the Zhuyin (注音) input method active these keys become ㄅㄉˇˋ and never reach Anki; switch to ABC while reviewing, or press **Cmd+1..4** instead. |
 | **← / ↑ / → / ↓** | Arrow Grading add-on: Again / Hard / Good / Easy on the answer side, then next card. Not affected by the input method. |
-| **Q** | Repeat Card add-on: back to the front of the same card, typing box cleared, nothing graded. Safe to press any number of times. |
+| **Q** | Repeat Card add-on: back to the front of the same card, typing box cleared, nothing graded. Safe to press any number of times. With Zhuyin active press **Shift+Q**. |
 | **R** | Replay the audio. |
 | **E** | Edit the current note. |
 | **Esc** | Leave the reviewer. |
