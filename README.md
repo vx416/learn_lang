@@ -10,8 +10,9 @@ Personal English-learning workspace. AI agents (Claude Code, Codex, Gemini CLI /
 | Add-on | Source | Purpose |
 |---|---|---|
 | AnkiConnect | code `2055492159` | HTTP API on `127.0.0.1:8765`. Every agent action goes through it. Anki must be open. |
-| Repeat Card | `tools/anki-addons/repeat_card/` (local) | Adds **Cmd+R** in the reviewer to show the current card's front again without grading it. |
+| Repeat Card | `tools/anki-addons/repeat_card/` (local) | Adds **Q** in the reviewer to show the current card's front again without grading it. |
 | Arrow Grading | `tools/anki-addons/arrow_grading/` (local) | Grade with the arrow keys on the answer side: **←** Again, **↑** Hard, **→** Good, **↓** Easy. |
+| Space Shows Answer | `tools/anki-addons/space_shows_answer/` (local) | **Space** shows the answer while the typing box is empty; with text in the box it is a normal space. |
 
 3. **Note types and decks** are created by the agent on first use, or by hand with:
 
@@ -51,9 +52,10 @@ Typical session: ask for an article, read it, say 整理單字 and 整理文法,
 | Key | Action |
 |---|---|
 | Type the word, then **Enter** | Submit the typed answer and show the back with a letter-by-letter comparison. |
+| **Space** (box empty) | Show the answer without typing (Space Shows Answer add-on). |
 | **1 / 2 / 3 / 4** | Again / Hard / Good / Easy. **Enter** or **Space** on the back also means Good. Anki never grades the typed answer for you: if the comparison is red, press **1**. With the Zhuyin (注音) input method active these keys become ㄅㄉˇˋ and never reach Anki; switch to ABC while reviewing, or press **Cmd+1..4** instead. |
 | **← / ↑ / → / ↓** | Arrow Grading add-on: Again / Hard / Good / Easy on the answer side, then next card. Not affected by the input method. |
-| **Cmd+R** | Repeat Card add-on: back to the front of the same card, typing box cleared, nothing graded. Safe to press any number of times. |
+| **Q** | Repeat Card add-on: back to the front of the same card, typing box cleared, nothing graded. Safe to press any number of times. |
 | **R** | Replay the audio. |
 | **E** | Edit the current note. |
 | **Esc** | Leave the reviewer. |

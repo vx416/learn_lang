@@ -1,6 +1,6 @@
 """Repeat Card: show the current card's front again without answering it.
 
-Shortcut in the reviewer: Ctrl+R (Cmd+R on macOS).
+Shortcut in the reviewer: Q.
 Nothing is graded or rescheduled and nothing is pushed onto Anki's undo stack,
 so it is safe to press as often as you like.
 """
@@ -8,7 +8,7 @@ so it is safe to press as often as you like.
 from aqt import mw
 from aqt.reviewer import Reviewer
 
-SHORTCUT = "Ctrl+R"
+SHORTCUT = "Q"
 
 
 def repeat_card() -> None:
