@@ -35,8 +35,8 @@ description: One sentence saying what this skill does and when to use it.
 ## Adding a skill
 
 ```sh
-cp -r .agents/skills/_template .agents/skills/<new-skill-name>
-# edit .agents/skills/<new-skill-name>/SKILL.md
+mkdir .agents/skills/<new-skill-name>
+# write .agents/skills/<new-skill-name>/SKILL.md using the format above
 scripts/link-skills.sh   # refresh Claude Code symlinks
 ```
 

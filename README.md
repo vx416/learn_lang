@@ -2,6 +2,45 @@
 
 Personal English-learning workspace. AI agents (Claude Code, Codex, Gemini CLI / Antigravity, ...) generate reading material, pull vocabulary and grammar out of it, and file everything into Anki as cloze cards with a typing box and pronunciation.
 
+## How to use
+
+The loop is: read, collect into Anki, drill; write, get corrected, collect the weak spots into Anki, drill.
+
+### 1. Read and collect
+
+1. Say **給我一篇英文文章** (optionally with a topic). The `reading` skill writes a ~5-minute C1 article with a breakdown of the hard vocabulary, grammar, and sentence patterns, saved under `.temp/articles/`. Say **唸給我聽** to hear it.
+2. Ask about anything unclear, e.g. **be subjected to 是啥意思**. The `explain-english` skill explains it and offers to save it as a card.
+3. Say **整理單字** and **整理文法**. The agent drafts the word list and the grammar exercises, you adjust or confirm, and they land in Anki as `English::Vocab::001` and `English::Grammar::001` (new batch decks open every 200 cards).
+
+### 2. Drill in Anki
+
+Open Anki and pick a batch deck. New cards go through three learning steps (`1m 10m 1h`) before they are scheduled for the next day.
+
+![Anki deck list with English::Vocab and English::Grammar batches](docs/images/anki-decks.png)
+
+A vocab card shows the sentence with the word blanked out, the Chinese translation, and a hint with the part of speech and meaning. Type the word and press Enter.
+
+![Front of a vocab card: cloze sentence, translation, hint, typing box](docs/images/anki-card-front.png)
+
+The back compares what you typed with the answer, shows the word, its meaning, one similar word with how the two differ, and reads the word and sentence aloud. Grade with the arrow keys (see [shortcuts](#shortcuts-in-the-anki-reviewer)).
+
+![Back of a vocab card: answer comparison, word, meaning, similar word, audio](docs/images/anki-card-back.png)
+
+Three keys come from the local add-ons in `tools/anki-addons/` and make drilling hands-on-keyboard:
+
+| Key | Add-on | What it does |
+|---|---|---|
+| **← ↑ → ↓** | Arrow Grading | Again / Hard / Good / Easy on the back, then next card. Works even with a CJK input method active. |
+| **Q** (or **Shift+Q**) | Repeat Card | Back to the front of the same card with the box cleared, nothing graded. Retype a word you got wrong right away. |
+| **Space** (box empty) | Space Shows Answer | Reveal the answer without typing. |
+
+The full key list, including Anki's built-in ones, is under [Shortcuts in the Anki reviewer](#shortcuts-in-the-anki-reviewer).
+
+### 3. Write and collect
+
+1. Paste something you wrote and say **幫我改這段**, or paste a diary entry and say **這是我今天的日記**. The `correct-writing` and `diary` skills correct it, give a C1–C2 rewrite (and, for a diary, an expanded version) with a score, and log everything under `.temp/writing/` and `.temp/diary/`.
+2. Every week or two, say **整理我的寫作錯誤**. The `review-writing` skill reads those logs, reports the mistakes you keep making and the words you avoid, and turns the ones you pick into grammar and vocab cards built from your own corrected sentences.
+
 ## Anki setup
 
 1. **Install Anki desktop** from https://apps.ankiweb.net (tested with 26.09).
@@ -51,13 +90,15 @@ Typical session: ask for an article, read it, say 整理單字 and 整理文法,
 
 ## Shortcuts in the Anki reviewer
 
+Rows marked **add-on** come from `tools/anki-addons/`; the rest are built into Anki.
+
 | Key | Action |
 |---|---|
 | Type the word, then **Enter** | Submit the typed answer and show the back with a letter-by-letter comparison. |
-| **Space** (box empty) | Show the answer without typing (Space Shows Answer add-on). |
+| **Space** (box empty) | **Add-on.** Space Shows Answer: reveal the answer without typing. |
 | **1 / 2 / 3 / 4** | Again / Hard / Good / Easy. **Enter** or **Space** on the back also means Good. Anki never grades the typed answer for you: if the comparison is red, press **1**. With the Zhuyin (注音) input method active these keys become ㄅㄉˇˋ and never reach Anki; switch to ABC while reviewing, or press **Cmd+1..4** instead. |
-| **← / ↑ / → / ↓** | Arrow Grading add-on: Again / Hard / Good / Easy on the answer side, then next card. Not affected by the input method. |
-| **Q** | Repeat Card add-on: back to the front of the same card, typing box cleared, nothing graded. Safe to press any number of times. With Zhuyin active press **Shift+Q**. |
+| **← / ↑ / → / ↓** | **Add-on.** Arrow Grading: Again / Hard / Good / Easy on the answer side, then next card. Not affected by the input method. |
+| **Q** | **Add-on.** Repeat Card: back to the front of the same card, typing box cleared, nothing graded. Safe to press any number of times. With Zhuyin active press **Shift+Q**. |
 | **R** | Replay the audio. |
 | **E** | Edit the current note. |
 | **Esc** | Leave the reviewer. |
@@ -73,5 +114,6 @@ AGENTS.md / CLAUDE.md          agent instructions (CLAUDE.md just imports AGENTS
 .claude/skills/                symlinks for Claude Code (generated)
 scripts/link-skills.sh         regenerates those symlinks
 tools/anki-addons/             local Anki add-ons
+docs/images/                   screenshots used in this README
 .temp/                         drafts the skills write and delete
 ```
