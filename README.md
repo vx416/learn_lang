@@ -1,6 +1,6 @@
 # learn_lang
 
-Personal English-learning workspace. AI agents (Claude Code, Codex, Gemini CLI / Antigravity, ...) generate reading material, pull vocabulary and grammar out of it, and file everything into Anki as cloze cards with a typing box and pronunciation.
+Personal English-learning workspace. AI agents (Claude Code, Codex, Gemini CLI / Antigravity, ...) generate reading material, correct your writing, pull vocabulary and grammar out of both, and file everything into Anki. The Anki side is customised too: two note types built for this workflow (`Vocab Cloze` with a typing box, part of speech, a similar-word contrast, and pronunciation; `Grammar Practice` for cloze exercises) and three small add-ons that turn the reviewer into a keyboard-only drill (arrow-key grading, repeat card, Space to reveal).
 
 ## How to use
 
