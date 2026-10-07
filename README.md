@@ -9,7 +9,7 @@ The loop is: read, collect into Anki, drill; write, get corrected, collect the w
 ### 1. Read and collect
 
 1. Say **給我一篇英文文章** (optionally with a topic). The `reading` skill writes a ~5-minute C1 article with a breakdown of the hard vocabulary, grammar, and sentence patterns, saved under `.temp/articles/`. Say **唸給我聽** to hear it.
-2. Ask about anything unclear, e.g. **be subjected to 是啥意思**. The `explain-english` skill explains it and offers to save it as a card.
+2. Send any word or ask about anything unclear, e.g. **cadence** or **be subjected to 是啥意思**. The `explain-english` fast-path streams the Traditional Chinese explanation first (`< 2s`) and **automatically saves/queues vocabulary items as `Vocab Cloze` cards by default** (asking only for grammar patterns).
 3. Say **整理單字** and **整理文法**. The agent drafts the word list and the grammar exercises, you adjust or confirm, and they land in Anki as `English::Vocab::001` and `English::Grammar::001` (new batch decks open every 200 cards).
 
 ### 2. Drill in Anki
@@ -41,6 +41,12 @@ The full key list, including Anki's built-in ones, is under [Shortcuts in the An
 1. Paste something you wrote and say **幫我改這段**, or paste a diary entry and say **這是我今天的日記**. The `correct-writing` and `diary` skills correct it, give a C1–C2 rewrite (and, for a diary, an expanded version) with a score, and log everything under `.temp/writing/` and `.temp/diary/`.
 2. Every week or two, say **整理我的寫作錯誤**. The `review-writing` skill reads those logs, reports the mistakes you keep making and the words you avoid, and turns the ones you pick into grammar and vocab cards built from your own corrected sentences.
 
+### 4. Dual-machine sync (when Anki is not installed)
+
+On a machine without Anki installed (or when Anki is closed), `anki.py` automatically falls back to the Git-tracked `queue/` directory:
+1. **Offline machine (no Anki)**: Looking up words, running `vocab-to-anki`, or running `grammar-to-anki` checks duplicates against `queue/existing_index.json` and appends full cards to `queue/vocab.json` or `queue/grammar.json`. Commit and push `queue/` to Git.
+2. **Anki machine**: Pull from Git with Anki open and say **把 queue 同步到 anki** (or run `python3 .agents/skills/anki/scripts/anki.py flush`). This imports all queued cards into `English::Vocab::NNN` and `English::Grammar::NNN`, clears `queue/*.json`, and refreshes `queue/existing_index.json` with all words/targets currently in Anki.
+
 ## Anki setup
 
 1. **Install Anki desktop** from https://apps.ankiweb.net (tested with 26.09).
@@ -53,7 +59,7 @@ The full key list, including Anki's built-in ones, is under [Shortcuts in the An
 | Arrow Grading | `tools/anki-addons/arrow_grading/` (local) | Grade with the arrow keys on the answer side: **←** Again, **↑** Hard, **→** Good, **↓** Easy. |
 | Space Shows Answer | `tools/anki-addons/space_shows_answer/` (local) | **Space** shows the answer while the typing box is empty; with text in the box it is a normal space. |
 
-3. **Note types and decks** are created by the agent on first use, or by hand with:
+3. **Note types and decks** are created by the agent on first use (or automatically by `anki.py flush`), or by hand with:
 
    ```sh
    python3 .agents/skills/anki/scripts/anki.py raw createModel "$(cat .agents/skills/anki/vocab_cloze_model.json)"
@@ -71,20 +77,20 @@ The full key list, including Anki's built-in ones, is under [Shortcuts in the An
 
 ## Skills
 
-Skills live in `.agents/skills/`, the cross-tool location scanned natively by Codex, Gemini CLI, Antigravity, and others. Claude Code reads `.claude/skills/`, which holds one symlink per skill; run `scripts/link-skills.sh` after adding or removing a skill. `AGENTS.md` (imported by `CLAUDE.md`) tells every agent where to look. Format and conventions: `.agents/skills/README.md`.
+Skills live in `.agents/skills/`, the cross-tool location scanned natively by Codex, Gemini CLI, Antigravity, and others. Claude Code reads `.claude/skills/`, which holds one symlink per skill; run `scripts/link-skills.sh` after adding or removing a skill. `AGENTS.md` (imported by `CLAUDE.md`) tells every agent where to look and defines the zero-`view_file` fast-path for instant word lookups. Format and conventions: `.agents/skills/README.md`.
 
 | Skill | What it does | Say something like |
 |---|---|---|
 | `reading` | Writes a ~5-minute C1 English article on a topic, then breaks down the hard vocabulary, grammar, and sentence patterns. Saves the result to `.temp/articles/<date>-<title>.md`. | 給我一篇英文文章 |
-| `explain-english` | Explains an English word, phrase, or sentence in Traditional Chinese, then asks whether to save it as a vocab or grammar card. | be subjected to 是啥意思 |
-| `vocab-to-anki` | Pulls key words from the current context into `.temp/vocab.txt`, lets you add or remove words, then files them as `Vocab Cloze` cards. | 整理單字到 anki |
-| `grammar-to-anki` | Picks 2–4 C1-level grammar structures from the context, drafts cloze exercises into `.temp/grammar.json`, then files them as `Grammar Practice` cards. | 把文法存到 anki |
+| `explain-english` | Streams a Traditional Chinese explanation first (`< 2s`), then automatically saves/queues vocabulary items as `Vocab Cloze` cards by default (or offers a `Grammar Practice` card for grammar structures). | cadence / be subjected to 是啥意思 |
+| `vocab-to-anki` | Pulls key words from the current context into `.temp/vocab.txt`, lets you add or remove words, then files them as `Vocab Cloze` cards (or queues to `queue/vocab.json` when offline). | 整理單字到 anki |
+| `grammar-to-anki` | Picks 2–4 C1-level grammar structures from the context, drafts cloze exercises into `.temp/grammar.json`, then files them as `Grammar Practice` cards (or queues to `queue/grammar.json` when offline). | 把文法存到 anki |
 | `correct-writing` | Corrects a passage you wrote, keeping your wording; gives a C1–C2 rewrite and a score; appends the original and correction to `.temp/writing/<date>.txt`. | 幫我改這段 |
 | `diary` | Runs the full `correct-writing` treatment on a diary entry, then expands the C1–C2 rewrite into a richer entry; appends original, corrected, rewritten, and expanded text to `.temp/diary/<month>-w<week>.txt`. | 這是我今天的日記 |
 | `review-writing` | Reads `.temp/writing/` and `.temp/diary/`, reports your recurring mistakes and weak vocabulary, then files the chosen items as grammar and vocab cards via the two card skills. | 整理我的寫作錯誤 |
-| `read-aloud` | Reads English aloud with macOS `say`: pasted text, an entry from `.temp/writing/` or `.temp/diary/` by `#N`, or an article from `.temp/articles/`. `correct-writing` and `diary` offer this for the C1–C2 rewrite. | 唸給我聽 / 唸 diary #2 |
-| `reset-deck` | Resets every card in a deck back to New (`forgetCards`), so the whole deck comes up for study again. Nothing is deleted. | reset vocab/001 |
-| `anki` | Transport layer used by the card skills: `anki.py` wraps AnkiConnect with `decks`, `models`, `fields`, `list`, `add`, `update`, `batch`, and `raw`. Call it directly to search or fix cards. | 這週加了哪些字 |
+| `read-aloud` | Reads English aloud with macOS `say`: pasted text, an entry from `.temp/writing/` or `.temp/diary/` by `#N`, or an article from `.temp/articles/`. Offered after `reading`, `correct-writing`, and `diary`. | 唸給我聽 / 唸 diary #2 |
+| `reset-deck` | Resets every card in a deck back to New (`anki.py reset --deck`), so the whole deck comes up for study again. Nothing is deleted. | reset vocab/001 |
+| `anki` | Transport layer used by the card skills: `anki.py` wraps AnkiConnect with `decks`, `models`, `fields`, `list`, `add`, `flush`, `update`, `reset`, `batch`, and `raw`. Automatically falls back to `queue/` when Anki is not installed/open. | 這週加了哪些字 / 把 queue 同步到 anki |
 
 Typical session: ask for an article, read it, say 整理單字 and 整理文法, confirm the drafts, then review in Anki.
 
@@ -109,10 +115,11 @@ Rows marked **add-on** come from `tools/anki-addons/`; the rest are built into A
 ```
 AGENTS.md / CLAUDE.md          agent instructions (CLAUDE.md just imports AGENTS.md)
 .agents/skills/<name>/SKILL.md skills (source of truth)
-.agents/skills/anki/scripts/anki.py         AnkiConnect CLI
+.agents/skills/anki/scripts/anki.py         AnkiConnect + offline queue CLI
 .agents/skills/anki/*_model.json            note type definitions
 .claude/skills/                symlinks for Claude Code (generated)
 scripts/link-skills.sh         regenerates those symlinks
+queue/                         Git-tracked offline card queue & existing-card index
 tools/anki-addons/             local Anki add-ons
 docs/images/                   screenshots used in this README
 .temp/                         drafts the skills write and delete

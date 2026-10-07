@@ -47,10 +47,15 @@ When the user gives approval (e.g. "可以", "確認", "沒問題"):
    - Read `.temp/vocab.txt`. If the user provided additional words in their confirmation message, append them to the file and list first.
    - Parse all words (splitting by commas, stripping whitespace and empty entries).
 
-2. **Card Specification**:
-   - **Deck / Batch**: `--batch` (sub-decks of 200: `English::Vocab::001`, `002`, ...). Never pass `--deck`.
-   - **Model**: `Vocab Cloze`. Read `.agents/skills/anki/vocab_cloze_model.json` for the field names (`inOrderFields`) and the card template; do not restate them here.
-   - **Content rules** for each field:
+2. **Check Duplicates (Single Query)**:
+   - Before generating example sentences, check all words at once:
+     ```sh
+     python3 .agents/skills/anki/scripts/anki.py list --query 'Word:word1 OR Word:word2 OR ...'
+     ```
+   - Skip any words already in Anki and note them for the final summary.
+
+3. **Card Specification (`Vocab Cloze` model, `--batch` into `English::Vocab::NNN`)**:
+   - Do not read `vocab_cloze_model.json` or `anki/SKILL.md` unless `Vocab Cloze` is missing in Anki; all required fields (`inOrderFields`) are listed below:
      - `Word`: base/dictionary form, lowercase unless a proper noun.
      - `Sentence`: one natural sentence at CEFR C1 level (idiomatic, mature register, may use subordinate clauses or collocations a C1 reader meets in editorials and literary non-fiction), 8–20 words, with the target word wrapped as `{{c1::...}}` exactly as it appears. Prefer the base form so what the user types matches `Word`; if an inflected form reads better, the cloze wraps the inflected form and that is what the user must type. Never leave the word unblanked elsewhere in the sentence. Reuse the sentence from the article/context when possible; if it is shorter than 8 words, extend it rather than replace it.
      - `WordMeaning`: the part of speech as used in the sentence, in parentheses, followed by a short Traditional Chinese gloss for that sense; separate multiple senses with `、`. Labels: `n.`, `v.`, `adj.`, `adv.`, `prep.`, `conj.`, `phr. v.` (phrasal verb), `phr.` (other multi-word phrase), `idiom`. Examples: `(adj.) 無所不在的`, `(phr. v.) 被迫承受、遭受`. No other English. It is shown on the front as a hint.
@@ -58,14 +63,15 @@ When the user gives approval (e.g. "可以", "確認", "沒問題"):
      - `SimilarWord`: one near-synonym or easily confused word, then how the two differ in use. Format: `<b>word</b><br>` followed by one line per word in Traditional Chinese, separated by `；`, each naming the word and the situation it fits, e.g. `<b>thorough</b><br>meticulous 強調對細節一絲不苟，形容人或做事態度；thorough 強調完整、沒有遺漏，形容檢查或調查`. Shown on the back only. Keep it under about 60 Chinese characters.
      - `tags`: `["vocab"]`.
 
-3. **Call `anki` Skill**:
-   - Follow the "Adding vocabulary" section of `.agents/skills/anki/SKILL.md`: check each word for duplicates, build the JSON list, add with `add --batch --model "Vocab Cloze" --json -`, then run `batch` to show the fill level. Skip duplicates and tell the user which ones.
-
-4. **Cleanup Temporary File**:
-   - Delete the temporary file after successfully importing the cards into Anki:
-     ```sh
-     rm -f .temp/vocab.txt
-     ```
+4. **Import via `anki.py` & Cleanup (Never pass `--deck`)**:
+   ```sh
+   python3 .agents/skills/anki/scripts/anki.py add --batch --partial --model "Vocab Cloze" --json - <<'EOF'
+   [{"fields": {"Word": "...", "Sentence": "...", "WordMeaning": "...", "SentenceMeaning": "...", "SimilarWord": "..."}, "tags": ["vocab"]}]
+   EOF
+   python3 .agents/skills/anki/scripts/anki.py batch
+   rm -f .temp/vocab.txt
+   ```
+   - **Offline Auto-Queue**: If Anki is not running on this machine, `anki.py` automatically checks `queue/existing_index.json` and appends the cards to `queue/vocab.json`. When output shows `queued note to 'queue/vocab.json'`, stage and commit `queue/` (`git add queue/ && git commit -m "chore(queue): add vocab cards"` and `git push` if a remote exists) so the machine with Anki can pull and run `anki.py flush`.
 
 5. **Report Summary**:
-   - Report the outcome to the user: the batch deck the notes went to (e.g. `English::Vocab::001`) and its fill level, number of cards created, any skipped duplicates, and confirm that `.temp/vocab.txt` has been cleaned up.
+   - Report the outcome to the user: either the Anki batch deck (`English::Vocab::001`) and its fill level, or the offline queue count in `queue/vocab.json` (and Git commit/push status), number of cards created/queued, any skipped duplicates, and confirm that `.temp/vocab.txt` has been cleaned up.

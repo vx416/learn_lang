@@ -9,13 +9,16 @@ The user writes a diary entry in English. Run the full `correct-writing` treatme
 
 ## Steps
 
-1. **Correct, rewrite, and score** the entry following steps 1–3 of `.agents/skills/correct-writing/SKILL.md`: the corrected version that keeps the user's wording, the C1–C2 rewrite, and the score with the key changes.
+1. **Correct, rewrite, and score** (no need to read `correct-writing/SKILL.md`):
+   - **Corrected**: keep the user's own words and sentence structure wherever usable; fix only what is wrong or unnatural (grammar, word choice, collocation, punctuation, word order).
+   - **C1–C2 rewrite**: rewrite freely at CEFR C1–C2 level (precise vocabulary, idiomatic collocations, varied syntax, mature register), same length ±20%.
+   - **Score**: 10-point scale for Grammar, Vocabulary, Fluency, Overall, and estimated CEFR level, followed by at most 5 key changes (`"<what you wrote>" → "<correction>" — <reason in zh-TW>`).
 2. **Expand** the C1–C2 rewrite into a richer diary entry, about 1.5–2× its length, same level, first person, same day and events:
    - Build only on what the user wrote: add sensory detail, feelings, a reflection or a takeaway, and linking sentences between events.
    - Do not invent new events, people, or facts. Where a detail is needed to make a sentence work, keep it generic ("the café", "later that evening") rather than specific.
    - Keep the diary voice: informal but well-written, no essay structure, no headings inside the entry.
 3. **Append to the weekly file** (below).
-4. **Offer to read it aloud.** After the reply, ask in one line whether the user wants to hear the C1–C2 rewrite. If they say yes, follow `.agents/skills/read-aloud/SKILL.md` with the rewrite text.
+4. **Offer to read it aloud.** After the reply, ask in one line whether the user wants to hear the `C1–C2 rewrite` or the `Expanded` version. If they say yes, follow `.agents/skills/read-aloud/SKILL.md`.
 
 ## Output format
 
@@ -33,7 +36,8 @@ The user writes a diary entry in English. Run the full `correct-writing` treatme
 <expanded entry>
 
 ## Score
-<same format as correct-writing>
+Grammar 7/10 · Vocabulary 6/10 · Fluency 6/10 · Overall 6.5/10 · Estimated level: B2
+- "<what you wrote>" → "<correction>" — <reason>
 ```
 
 Explanations in Traditional Chinese; quoted English stays English. One short line with the log path and entry number after the score, e.g. `已記錄到 .temp/diary/2026-09-w3.txt #2`.

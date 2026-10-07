@@ -1,0 +1,14 @@
+[
+  {
+    "fields": {
+      "Word": "cadence",
+      "Sentence": "Switching to a biweekly release {{c1::cadence}} allowed the engineering team to catch regressions early without burning out.",
+      "WordMeaning": "(n.) 節奏、固定頻率；（說話的）抑揚頓挫",
+      "SentenceMeaning": "改為雙週一次的發布節奏，讓工程團隊能及早抓出退化問題，同時避免過勞。",
+      "SimilarWord": "<b>rhythm</b><br>cadence 強調規律可預期的週期頻率（如發布或會議節奏）或語調起伏；rhythm 強調音樂、動作或自然變化的律動感"
+    },
+    "tags": [
+      "vocab"
+    ]
+  }
+]

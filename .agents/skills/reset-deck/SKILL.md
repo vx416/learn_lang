@@ -16,15 +16,13 @@ Turn every card in a deck back into a new card. Nothing is deleted; only the sch
    - A name that already contains `::` is used as-is.
    Check it exists with `anki.py decks`. If it does not, list the decks and ask; never guess.
 
-2. **Find and forget the cards** (one pipeline, from the project root):
+2. **Find and forget the cards** (from the project root):
    ```sh
-   python3 .agents/skills/anki/scripts/anki.py raw findCards '{"query": "deck:English::Vocab::001"}' \
-     | python3 -c 'import json,sys; print(json.dumps({"cards": json.load(sys.stdin)}))' \
-     | xargs -0 python3 .agents/skills/anki/scripts/anki.py raw forgetCards
+   python3 .agents/skills/anki/scripts/anki.py reset --deck "English::Vocab::001"
    ```
-   `deck:` matches sub-decks too, so a parent name resets all batches. Count the ids from `findCards` for the report.
+   `deck:` matches sub-decks too, so passing a parent name (`English::Vocab` or `English::Grammar`) resets all batches under it.
 
-3. **Report** in one line: deck name and how many cards were reset. If `findCards` returned an empty list, say the deck has no cards and stop.
+3. **Report** in one line: deck name and how many cards were reset (printed by `anki.py reset`). If `0 cards`, say the deck has no cards and stop.
 
 ## Notes
 

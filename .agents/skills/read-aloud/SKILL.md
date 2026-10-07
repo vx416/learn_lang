@@ -1,6 +1,6 @@
 ---
 name: read-aloud
-description: Read English text aloud through the Mac's speakers with the macOS `say` command. Use when the user asks to hear text ("唸給我聽", "read this to me", "唸一遍"), whether they paste the text or point at something saved in .temp/ (e.g., "唸 diary #2", "唸今天 writing 的第 3 篇的 rewrite", "唸剛才那篇文章"). Also invoked by correct-writing and diary when the user accepts the offer to hear the rewrite.
+description: "Read English text aloud through the Mac's speakers with the macOS `say` command. Use when the user asks to hear text ('唸給我聽', '念給我聽', 'read this to me', '唸一遍'), whether they paste the text or point at something saved in .temp/ (e.g., '唸 diary #2', '唸今天 writing 的第 3 篇', '唸剛才那篇文章'). Also invoked by reading, correct-writing, and diary when the user accepts the offer to hear the text."
 ---
 
 # Read Aloud
